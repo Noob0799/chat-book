@@ -1,0 +1,14 @@
+<mat-card>
+  <form>
+      <mat-form-field>
+          <input matInput type="text" name="titleInput" [placeholder]="'title'"required #titleInput>
+          <p class="danger" *ngIf="titleEmpty">Please enter a title for your post.</p>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput rows="6" [placeholder]="'body'" required #postInput></textarea>
+        <p class="danger" *ngIf="bodyEmpty">Please enter the contents of your post.</p>
+      </mat-form-field>
+      <br>
+      <button mat-raised-button color="primary" type="button" (click)='savePost(titleInput, postInput)'>Save</button>
+  </form>
+</mat-card>
