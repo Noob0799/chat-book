@@ -59,7 +59,7 @@ export class PostService {
       });
   }
   getpost(postId: string) {
-    return {...this.posts.find(p => p.id === postId)};
+    return this.http.get<{message: string, post: {_id: string, title: string, body: string}}>('http://localhost:3000/api/posts/' + postId);
   }
 
   deletePosts(postId: string) {

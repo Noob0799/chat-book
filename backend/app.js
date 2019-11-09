@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const Post = require('./models/posts');
+const postRoutes = require('./routes/posts');
 
 mongoose.connect("mongodb+srv://Sayantan:8vgHuDBrZSBa9KSN@cluster0-qgcsc.mongodb.net/chatbook?retryWrites=true&w=majority", { useNewUrlParser: true,  useUnifiedTopology: true })
   .then(() => {
@@ -22,47 +22,6 @@ app.use((req,res,next) => {
   res.setHeader("Access-Control-Allow-Methods","GET, POST, PUT, PATCH, DELETE, OPTIONS");
   next();
 });
+app.use('/api/posts', postRoutes);
 
-app.post('/api/posts',(req,res,next) => {
-  const post = new Post({
-    title: req.body.title,
-    body: req.body.body
-  });
-  console.log('Posts:', post);
-  post.save().then(result => {
-    console.log(result);
-    res.status(201).json({message: "New Post added successfully", postId: result._id});
-  });
-})
-app.get( '/api/posts',(req, res, next) => {
-  Post.find()
-    .then(documents => {
-      console.log(documents);
-      res.status(200).json({message: "Posts fetched successfully", posts: documents});
-    });
-});
-
-app.put('/api/posts/:id',(req,res,next) => {
-  const post = new Post({
-    _id: req.body.id,
-    title: req.body.title,
-    body: req.body.body
-  });
-  Post.updateOne({_id: req.params.id}, post)
-    .then(result => {
-      console.log(result);
-      res.status(200).json({message: "Post updated successfully"});
-    });
-});
-
-app.delete('/api/posts/:id', (req, res, next) => {
-  Post.deleteOne({_id: req.params.id})
-    .then(result => {
-      console.log(result);
-      res.status(200).json({message: "Post Deleted Successfully!"});
-    })
-    .catch(error => {
-      console.log(error);
-    });
-});
 module.exports = app;
